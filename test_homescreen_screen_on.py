@@ -111,3 +111,4 @@ class TestLockScreen(GaiaTestCase):
         cmd.append("shell")
         cmd.append("echo 1 > /sys/class/power_supply/battery/charging_enabled")
         subprocess.Popen(cmd)
+        time.sleep(1)
