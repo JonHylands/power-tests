@@ -6,14 +6,16 @@ from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
 
 from powertool.mozilla import MozillaAmmeter
+from datetime import datetime
+
 import time
 import json
 import sys
 import os
 import subprocess
 
-STABILIZATION_TIME = 10 # seconds
-SAMPLE_TIME = 10 # seconds
+STABILIZATION_TIME = 30 # seconds
+SAMPLE_TIME = 30 # seconds
 
 class TestLockScreen(GaiaTestCase):
 
@@ -49,12 +51,13 @@ class TestLockScreen(GaiaTestCase):
         print "setUp - done"
 
 
-    def runPowerTest(self):
+    def runPowerTest(self, testName):
         print ""
         print "Waiting", STABILIZATION_TIME, "seconds to stabilize"
         time.sleep(STABILIZATION_TIME)
 
         sampleLog = []
+        samples = []
         totalCurrent = 0
         done = False
         print "Starting power test, gathering results for", SAMPLE_TIME, "seconds"
@@ -67,15 +70,33 @@ class TestLockScreen(GaiaTestCase):
                 sampleObj['voltage'] = sample['voltage'].value
                 sampleObj['time'] = sample['time'].value + self.sampleTimeEpochOffset
                 sampleLog.append(sampleObj)
+                samples.append(str(sample['current'].value))
                 totalCurrent += sampleObj['current']
             done = (time.time() > stopTime)
 
-        averageCurrent = totalCurrent / len(sampleLog)
+        averageCurrent = int(totalCurrent / len(sampleLog))
         powerProfile = {}
-        powerProfile['sampleTimeEpochOffset'] = self.sampleTimeEpochOffset
-        powerProfile['samples'] = sampleLog
+        powerProfile['testTime'] = datetime.now().strftime("%Y%m%d%H%M%S")
+        powerProfile['sampleLog'] = sampleLog
+        powerProfile['samples'] = samples
+        powerProfile['testName'] = testName
+        powerProfile['average'] = averageCurrent
         print "Sample count:", len(sampleLog)
         print "Average current:", averageCurrent, "mA"
+        self.writeTestResults(powerProfile)
+
+
+    def writeTestResults(self, powerProfile):
+        summaryName = '%s_%s_summary.log' % (powerProfile['testName'], powerProfile['testTime'])
+        summaryFile = open(summaryName, 'w')
+        summaryFile.write("test_name: %s\n" % powerProfile["testName"])
+        summaryFile.write("completed: %s\n" % powerProfile["testTime"])
+        summaryFile.write("test_runtime: %d\n" % SAMPLE_TIME)
+        summaryFile.write("average: %d\n" % powerProfile["average"])
+        summaryFile.write("samples: ")
+        summaryFile.write(", ".join(powerProfile['samples']))
+        summaryFile.write("\n")
+        summaryFile.close()
 
 
     def test_unlock_to_homescreen_off(self):
@@ -88,7 +109,7 @@ class TestLockScreen(GaiaTestCase):
         self.device.turn_screen_off()
         print ""
         print "Running Idle Test (screen off)"
-        self.runPowerTest()
+        self.runPowerTest("Idle_Screen_Off")
 
 
     def test_unlock_to_homescreen_on(self):
@@ -100,7 +121,7 @@ class TestLockScreen(GaiaTestCase):
         self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
         print ""
         print "Running Idle Test (screen on)"
-        self.runPowerTest()
+        self.runPowerTest("Idle_Screen_On")
 
 
     def tearDown(self):
