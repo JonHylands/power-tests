@@ -25,6 +25,10 @@ class TestLockScreen(GaiaTestCase):
         # Make sure the lock screen is up
         self.device.lock()
 
+        # Make sure the screen brightness is full on, with auto turned off
+        self.data_layer.set_setting("screen.automatic-brightness", False)
+        self.data_layer.set_setting("screen.brightness", 1.0)
+
         # Make sure USB charging is turned off
         cmd = []
         cmd.append("adb")
