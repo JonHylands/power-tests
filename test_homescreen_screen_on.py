@@ -133,6 +133,8 @@ class TestLockScreen(GaiaTestCase):
 
         self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
 
+        # Turn off the geolocation prompt, and then launch the camera app
+        self.apps.set_permission('Camera', 'geolocation', 'deny')
         self.camera = Camera(self.marionette)
         self.camera.launch()
 
