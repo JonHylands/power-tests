@@ -4,6 +4,7 @@
 
 from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
+from gaiatest.apps.camera.app import Camera
 
 from powertool.mozilla import MozillaAmmeter
 from datetime import datetime
@@ -122,6 +123,22 @@ class TestLockScreen(GaiaTestCase):
         print ""
         print "Running Idle Test (screen on)"
         self.runPowerTest("Idle_Screen_On")
+
+
+    def test_camera_preview(self):
+        """https://moztrap.mozilla.org/manage/case/1296/"""
+
+        lock_screen = LockScreen(self.marionette)
+        homescreen = lock_screen.unlock()
+
+        self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+
+        self.camera = Camera(self.marionette)
+        self.camera.launch()
+
+        print ""
+        print "Running Camera Preview Test"
+        self.runPowerTest("Camera_Preview")
 
 
     def tearDown(self):
