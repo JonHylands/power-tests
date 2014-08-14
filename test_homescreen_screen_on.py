@@ -52,7 +52,7 @@ class TestLockScreen(GaiaTestCase):
         print "setUp - done"
 
 
-    def runPowerTest(self, testName):
+    def runPowerTest(self, testName, appName):
         print ""
         print "Waiting", STABILIZATION_TIME, "seconds to stabilize"
         time.sleep(STABILIZATION_TIME)
@@ -82,6 +82,7 @@ class TestLockScreen(GaiaTestCase):
         powerProfile['samples'] = samples
         powerProfile['testName'] = testName
         powerProfile['average'] = averageCurrent
+        powerProfile['app'] = appName
         print "Sample count:", len(sampleLog)
         print "Average current:", averageCurrent, "mA"
         self.writeTestResults(powerProfile)
@@ -94,6 +95,7 @@ class TestLockScreen(GaiaTestCase):
         summaryFile.write("completed: %s\n" % powerProfile["testTime"])
         summaryFile.write("test_runtime: %d\n" % SAMPLE_TIME)
         summaryFile.write("average: %d\n" % powerProfile["average"])
+        summaryFile.write("app_under_test: %s\n" % powerProfile["app"]
         #summaryFile.write("samples: ")
         #summaryFile.write(", ".join(powerProfile['samples']))
         summaryFile.write("\n")
@@ -110,7 +112,7 @@ class TestLockScreen(GaiaTestCase):
         self.device.turn_screen_off()
         print ""
         print "Running Idle Test (screen off)"
-        self.runPowerTest("idle_screen_off")
+        self.runPowerTest("idle_screen_off", "homescreen")
 
 
     def test_unlock_to_homescreen_on(self):
@@ -122,7 +124,7 @@ class TestLockScreen(GaiaTestCase):
         self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
         print ""
         print "Running Idle Test (screen on)"
-        self.runPowerTest("idle_screen_on")
+        self.runPowerTest("idle_screen_on", "homescreen")
 
 
     def test_camera_preview(self):
@@ -140,7 +142,7 @@ class TestLockScreen(GaiaTestCase):
 
         print ""
         print "Running Camera Preview Test"
-        self.runPowerTest("camera_preview")
+        self.runPowerTest("camera_preview", "camera")
 
 
     def tearDown(self):

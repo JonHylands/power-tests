@@ -277,8 +277,8 @@ def cli():
                     elif k in "test_name":
                         # Prefix test name so all tests are grouped together in datazilla
                         checkpoint_summary[k] = "power_" + v
-#                    else:
-#                        checkpoint_summary[k] = v
+                    else:
+                        checkpoint_summary[k] = v
             except:
                 raise Exception("Value missing from '%s', cannot proceed." % options.results_file)
     
