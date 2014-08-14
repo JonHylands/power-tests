@@ -95,7 +95,7 @@ class TestLockScreen(GaiaTestCase):
         summaryFile.write("completed: %s\n" % powerProfile["testTime"])
         summaryFile.write("test_runtime: %d\n" % SAMPLE_TIME)
         summaryFile.write("average: %d\n" % powerProfile["average"])
-        summaryFile.write("app_under_test: %s\n" % powerProfile["app"]
+        summaryFile.write("app_under_test: %s\n" % powerProfile["app"])
         #summaryFile.write("samples: ")
         #summaryFile.write(", ".join(powerProfile['samples']))
         summaryFile.write("\n")
