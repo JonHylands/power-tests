@@ -110,7 +110,7 @@ class TestLockScreen(GaiaTestCase):
         self.device.turn_screen_off()
         print ""
         print "Running Idle Test (screen off)"
-        self.runPowerTest("Idle_Screen_Off")
+        self.runPowerTest("idle_screen_off")
 
 
     def test_unlock_to_homescreen_on(self):
@@ -122,7 +122,7 @@ class TestLockScreen(GaiaTestCase):
         self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
         print ""
         print "Running Idle Test (screen on)"
-        self.runPowerTest("Idle_Screen_On")
+        self.runPowerTest("idle_screen_on")
 
 
     def test_camera_preview(self):
@@ -140,7 +140,7 @@ class TestLockScreen(GaiaTestCase):
 
         print ""
         print "Running Camera Preview Test"
-        self.runPowerTest("Camera_Preview")
+        self.runPowerTest("camera_preview")
 
 
     def tearDown(self):
