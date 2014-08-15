@@ -294,7 +294,7 @@ def cli():
         # Submit or print the results
         if poster.submit_report:
             #poster.post_to_datazilla(results, checkpoint_summary['test_name'])
-            poster.post_to_datazilla(results, checkpoint_summary['test_name'])
+            poster.post_to_datazilla(results, checkpoint_summary['app_under_test'])
         else:
             print "\nCheckpoint summary for test '%s':\n" % checkpoint_summary['test_name']
             print checkpoint_summary
