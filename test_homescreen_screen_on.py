@@ -52,7 +52,7 @@ class TestLockScreen(GaiaTestCase):
         print "setUp - done"
 
 
-    def runPowerTest(self, testName, appName):
+    def runPowerTest(self, testName, appName, context):
         print ""
         print "Waiting", STABILIZATION_TIME, "seconds to stabilize"
         time.sleep(STABILIZATION_TIME)
@@ -78,11 +78,13 @@ class TestLockScreen(GaiaTestCase):
         averageCurrent = int(totalCurrent / len(sampleLog))
         powerProfile = {}
         powerProfile['testTime'] = datetime.now().strftime("%Y%m%d%H%M%S")
+        powerProfile['epoch'] = int(time.time() * 1000)
         powerProfile['sampleLog'] = sampleLog
         powerProfile['samples'] = samples
         powerProfile['testName'] = testName
         powerProfile['average'] = averageCurrent
         powerProfile['app'] = appName
+        powerProfile['context'] = context
         print "Sample count:", len(sampleLog)
         print "Average current:", averageCurrent, "mA"
         self.writeTestResults(powerProfile)
@@ -91,13 +93,11 @@ class TestLockScreen(GaiaTestCase):
     def writeTestResults(self, powerProfile):
         summaryName = '%s_%s_summary.log' % (powerProfile['testName'], powerProfile['testTime'])
         summaryFile = open(summaryName, 'w')
-        summaryFile.write("test_name: %s\n" % powerProfile["testName"])
-        summaryFile.write("completed: %s\n" % powerProfile["testTime"])
-        summaryFile.write("test_runtime: %d\n" % SAMPLE_TIME)
-        summaryFile.write("average: %d\n" % powerProfile["average"])
-        summaryFile.write("app_under_test: %s\n" % powerProfile["app"])
-        #summaryFile.write("samples: ")
-        #summaryFile.write(", ".join(powerProfile['samples']))
+        summaryFile.write("name: power.%s.current\n" % powerProfile["testName"])
+        summaryFile.write("time: %s\n" % powerProfile["epoch"])
+        summaryFile.write("value: %s\n" % powerProfile["average"])
+        summaryFile.write("context: %s\n" % powerProfile["context"])
+        summaryFile.write("app_name: %s\n" % powerProfile["app"])
         summaryFile.write("\n")
         summaryFile.close()
 
@@ -112,7 +112,7 @@ class TestLockScreen(GaiaTestCase):
         self.device.turn_screen_off()
         print ""
         print "Running Idle Test (screen off)"
-        self.runPowerTest("idle_screen_off", "homescreen")
+        self.runPowerTest("idle_screen_off", "homescreen", "verticalhome")
 
 
     def test_unlock_to_homescreen_on(self):
@@ -124,7 +124,7 @@ class TestLockScreen(GaiaTestCase):
         self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
         print ""
         print "Running Idle Test (screen on)"
-        self.runPowerTest("idle_screen_on", "homescreen")
+        self.runPowerTest("idle_screen_on", "homescreen", "verticalhome")
 
 
     def test_camera_preview(self):
@@ -142,7 +142,7 @@ class TestLockScreen(GaiaTestCase):
 
         print ""
         print "Running Camera Preview Test"
-        self.runPowerTest("camera_preview", "camera")
+        self.runPowerTest("camera_preview", "camera", "camera")
 
 
     def tearDown(self):
