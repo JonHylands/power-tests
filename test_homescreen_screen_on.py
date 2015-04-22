@@ -84,7 +84,7 @@ class TestLockScreen(GaiaTestCase):
         powerProfile['testName'] = testName
         powerProfile['average'] = averageCurrent
         powerProfile['app'] = appName
-        powerProfile['context'] = context
+        powerProfile['context'] = context + ".gaiamobile.org"
         print "Sample count:", len(sampleLog)
         print "Average current:", averageCurrent, "mA"
         self.writeTestResults(powerProfile)
@@ -112,7 +112,7 @@ class TestLockScreen(GaiaTestCase):
         self.device.turn_screen_off()
         print ""
         print "Running Idle Test (screen off)"
-        self.runPowerTest("idle_screen_off", "homescreen", "verticalhome")
+        self.runPowerTest("idle_screen_off", "Homescreen", "verticalhome")
 
 
     def test_unlock_to_homescreen_on(self):
@@ -124,7 +124,7 @@ class TestLockScreen(GaiaTestCase):
         self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
         print ""
         print "Running Idle Test (screen on)"
-        self.runPowerTest("idle_screen_on", "homescreen", "verticalhome")
+        self.runPowerTest("idle_screen_on", "Homescreen", "verticalhome")
 
 
     def test_camera_preview(self):
@@ -142,7 +142,7 @@ class TestLockScreen(GaiaTestCase):
 
         print ""
         print "Running Camera Preview Test"
-        self.runPowerTest("camera_preview", "camera", "camera")
+        self.runPowerTest("camera_preview", "Camera", "camera")
 
 
     def tearDown(self):

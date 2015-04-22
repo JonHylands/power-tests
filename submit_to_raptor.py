@@ -2,6 +2,9 @@
 #
 
 import os
+from optparse import OptionParser
+from urlparse import urlparse
+import time
 
 #("name: power.%s.current\n" % powerProfile["testName"])
 #("time: %s\n" % powerProfile["epoch"])
@@ -10,7 +13,6 @@ import os
 
 
 class RaptorTestPoster(object):
-    def __init__(self):
 
 #   "name": "flash.idle_screen_on.current",
 #"columns": ["time", "entryType", "context", "appName", "epoch", "value", "branch", "device", "memory"],
@@ -30,7 +32,7 @@ class RaptorTestPoster(object):
         json_string += results["app_name"]
         json_string += '", '
         json_string += str(results["time"])
-        json_string += '", '
+        json_string += ', '
         json_string += str(results["value"])
         json_string += ', "master", "flame-kk", 1024]]}]'
 
@@ -38,6 +40,7 @@ class RaptorTestPoster(object):
 curl -X POST -d '%(json)s' \
 'http://goldiewilson-onepointtwentyone-1.c.influxdb.com:8086/db/raptor/series?u=power&p=123456'""" % {'json': json_string}
 
+        print "os.system - ", command_string
         os.system(command_string)
 
 
@@ -111,7 +114,8 @@ def cli():
         if len(entire_file_list) == 0:
             raise Exception("No checkpoint *_summary.log files were found in the given path")
         for found_file in entire_file_list:
-            summary_file_list.append("%s/%s" % (file_path, found_file))
+            if found_file.endswith("summary.log"):
+                summary_file_list.append("%s/%s" % (file_path, found_file))
         if len(summary_file_list) == 0:
             raise Exception("No checkpoint *_summary.log files were found in the given path")
 
