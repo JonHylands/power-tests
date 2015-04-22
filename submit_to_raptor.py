@@ -139,16 +139,12 @@ def cli():
         summary_file.close()
 
         for x in read_in:
-            try:
-                if x.find(':') != -1: # Ignore empty lines ie. last line of file which is empty
-                    k, v = x.split(': ')
-                    if k in ["average", "test_runtime", "completed"]:
-                        checkpoint_summary[k] = int(v)
-                    else:
-                        checkpoint_summary[k] = v
-            except:
-                raise Exception("Value missing from '%s', cannot proceed." % options.results_file)
-
+            if x.find(':') != -1: # Ignore empty lines ie. last line of file which is empty
+                k, v = x.split(': ')
+                if k in ["average", "test_runtime", "completed"]:
+                    results[k] = int(v)
+                else:
+                    results[k] = v
 
         # Create raptor post object
         poster = RaptorTestPoster()
