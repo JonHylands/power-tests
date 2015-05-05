@@ -18,7 +18,7 @@ import subprocess
 STABILIZATION_TIME = 30 # seconds
 SAMPLE_TIME = 30 # seconds
 
-class TestLockScreen(GaiaTestCase):
+class TestPower(GaiaTestCase):
 
     def setUp(self):
         print "setUp - start"
