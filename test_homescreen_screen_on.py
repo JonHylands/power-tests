@@ -145,6 +145,25 @@ class TestPower(GaiaTestCase):
         self.runPowerTest("camera_preview", "Camera", "camera")
 
 
+    def test_camera_picture(self):
+        """https://moztrap.mozilla.org/manage/case/1296/"""
+
+        lock_screen = LockScreen(self.marionette)
+        homescreen = lock_screen.unlock()
+
+        self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+
+        # Turn off the geolocation prompt, and then launch the camera app
+        self.apps.set_permission('Camera', 'geolocation', 'deny')
+        self.camera = Camera(self.marionette)
+        self.camera.launch()
+        time.sleep(30)
+        camera.capture()
+        print ""
+        print "Running Camera Picture Test"
+        self.runPowerTest("camera_picture", "Camera", "camera")
+
+
     def tearDown(self):
         GaiaTestCase.tearDown(self)
 
