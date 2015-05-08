@@ -52,30 +52,44 @@ class TestPower(GaiaTestCase):
         print "setUp - done"
 
 
+    def getSample(self, sampleLog, samples):
+        sample = self.ammeter.getSample(self.ammeterFields)
+        if sample is not None:
+            sampleObj = {}
+            sampleObj['current'] = sample['current'].value
+            sampleObj['voltage'] = sample['voltage'].value
+            sampleObj['time'] = sample['time'].value + self.sampleTimeEpochOffset
+            sampleLog.append(sampleObj)
+            samples.append(str(sample['current'].value))
+            return sampleObj['current']
+        else:
+            return None
+
+
+    def runPowerTestLoopSimple(self, testName, appName, context):
+        sampleLog = []
+        samples = []
+        totalCurrent = 0
+        done = False
+        stopTime = time.time() + SAMPLE_TIME
+        while not done:
+            current = self.getSample(sampleLog, samples)
+            if current is not None:
+                totalCurrent += current
+            done = (time.time() > stopTime)
+
+        averageCurrent = int(totalCurrent / len(sampleLog))
+        return (sampleLog, samples, averageCurrent)
+
+
+
     def runPowerTest(self, testName, appName, context):
         print ""
         print "Waiting", STABILIZATION_TIME, "seconds to stabilize"
         time.sleep(STABILIZATION_TIME)
 
-        sampleLog = []
-        samples = []
-        totalCurrent = 0
-        done = False
         print "Starting power test, gathering results for", SAMPLE_TIME, "seconds"
-        stopTime = time.time() + SAMPLE_TIME
-        while not done:
-            sample = self.ammeter.getSample(self.ammeterFields)
-            if sample is not None:
-                sampleObj = {}
-                sampleObj['current'] = sample['current'].value
-                sampleObj['voltage'] = sample['voltage'].value
-                sampleObj['time'] = sample['time'].value + self.sampleTimeEpochOffset
-                sampleLog.append(sampleObj)
-                samples.append(str(sample['current'].value))
-                totalCurrent += sampleObj['current']
-            done = (time.time() > stopTime)
-
-        averageCurrent = int(totalCurrent / len(sampleLog))
+        (sampleLog, samples, averageCurrent) = self.runPowerTestLoopSimple(testName, appName, context)
         powerProfile = {}
         powerProfile['testTime'] = datetime.now().strftime("%Y%m%d%H%M%S")
         powerProfile['epoch'] = int(time.time() * 1000)
@@ -157,8 +171,7 @@ class TestPower(GaiaTestCase):
         self.apps.set_permission('Camera', 'geolocation', 'deny')
         self.camera = Camera(self.marionette)
         self.camera.launch()
-        time.sleep(30)
-        self.camera.take_photo()
+
         print ""
         print "Running Camera Picture Test"
         self.runPowerTest("camera_picture", "Camera", "camera")
