@@ -158,7 +158,7 @@ class TestPower(GaiaTestCase):
         self.camera = Camera(self.marionette)
         self.camera.launch()
         time.sleep(30)
-        camera.capture()
+        self.camera.capture()
         print ""
         print "Running Camera Picture Test"
         self.runPowerTest("camera_picture", "Camera", "camera")
