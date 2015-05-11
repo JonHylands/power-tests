@@ -110,7 +110,7 @@ class TestPower(GaiaTestCase):
         time.sleep(STABILIZATION_TIME)
 
         print "Starting power test, gathering results for", SAMPLE_TIME, "seconds"
-        if testName = "camera_picture":
+        if testName == "camera_picture":
             (sampleLog, samples, averageCurrent) = self.runPowerTestCameraPictures(testName, appName, context)
         else:
             (sampleLog, samples, averageCurrent) = self.runPowerTestLoopSimple(testName, appName, context)
