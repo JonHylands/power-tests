@@ -195,14 +195,15 @@ class TestPower(GaiaTestCase):
         self.apps.set_permission('Camera', 'geolocation', 'deny')
         self.camera = Camera(self.marionette)
         self.camera.launch()
-        time.sleep(10)
+        time.sleep(5)
         self.camera.tap_switch_source()
         time.sleep(5)
-        self.camera.record_video(10)
+        self.camera.tap_capture()
 
         print ""
         print "Running Camera Video Test"
         self.runPowerTest("camera_video", "Camera", "camera")
+        self.camera.tap_capture()
 
 
     def test_camera_picture(self):
