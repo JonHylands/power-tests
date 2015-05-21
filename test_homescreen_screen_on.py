@@ -5,6 +5,8 @@
 from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
 from gaiatest.apps.camera.app import Camera
+from marionette_driver.marionette import Actions
+from marionette_driver.by import By
 
 from powertool.mozilla import MozillaAmmeter
 from datetime import datetime
@@ -20,6 +22,7 @@ SAMPLE_TIME = 30 # seconds
 PICTURE_TIME = 5 # seconds between photos
 
 class TestPower(GaiaTestCase):
+    _camera_frame_locator = (By.CSS_SELECTOR, 'iframe[src*="camera"][src*="/index.html"]')
 
     def setUp(self):
         print "setUp - start"
@@ -177,6 +180,11 @@ class TestPower(GaiaTestCase):
         self.apps.set_permission('Camera', 'geolocation', 'deny')
         self.camera = Camera(self.marionette)
         self.camera.launch()
+        self.marionette.switch_to_frame()
+        self.wait_for_element_present(*self._camera_frame_locator)
+        camera_frame = self.marionette.find_element(*self._camera_frame_locator)
+        camera_frame.tap()
+        self.marionette.switch_to_frame(camera_frame)
 
         print ""
         print "Running Camera Preview Test"
@@ -198,6 +206,11 @@ class TestPower(GaiaTestCase):
         time.sleep(5)
         self.camera.tap_switch_source()
         time.sleep(5)
+        self.marionette.switch_to_frame()
+        self.wait_for_element_present(*self._camera_frame_locator)
+        camera_frame = self.marionette.find_element(*self._camera_frame_locator)
+        camera_frame.tap()
+        self.marionette.switch_to_frame(camera_frame)
         self.camera.tap_capture()
 
         print ""
@@ -218,6 +231,11 @@ class TestPower(GaiaTestCase):
         self.apps.set_permission('Camera', 'geolocation', 'deny')
         self.camera = Camera(self.marionette)
         self.camera.launch()
+        self.marionette.switch_to_frame()
+        self.wait_for_element_present(*self._camera_frame_locator)
+        camera_frame = self.marionette.find_element(*self._camera_frame_locator)
+        camera_frame.tap()
+        self.marionette.switch_to_frame(camera_frame)
 
         print ""
         print "Running Camera Picture Test"
