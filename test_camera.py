@@ -20,11 +20,18 @@ import os
 import subprocess
 
 
+PICTURE_INTERVAL_TIME = 5 # seconds between photos
+
+
 class TestCameraPower(TestPower):
     _camera_frame_locator = (By.CSS_SELECTOR, 'iframe[src*="camera"][src*="/index.html"]')
 
     def setUp(self):
         TestPower.setUp(self)
+
+
+    def take_picture(self):
+        self.camera.take_photo()
 
 
     def test_camera_preview(self):
@@ -98,7 +105,7 @@ class TestCameraPower(TestPower):
 
         print ""
         print "Running Camera Picture Test"
-        self.runPowerTest("camera_picture", "Camera", "camera")
+        self.runPowerTest("camera_picture", "Camera", "camera", PICTURE_INTERVAL_TIME, self.take_picture)
 
 
     def tearDown(self):

@@ -55,6 +55,7 @@ class TestMediaPlaybackPower(TestPower):
         print "Running Music Test (screen off)"
         self.runPowerTest("background_music_playback", "Music", "music")
 
+
     def test_video_playback(self):
         self.push_resource(os.path.abspath('source/meetthecubs.webm'))
         lock_screen = LockScreen(self.marionette)
@@ -95,6 +96,7 @@ class TestMediaPlaybackPower(TestPower):
         print ""
         print "Running Video Test"
         self.runPowerTest("video_playback", "Video", "video")
+
 
     def tearDown(self):
         TestPower.tearDown(self)

@@ -18,7 +18,7 @@ import subprocess
 
 STABILIZATION_TIME = 30 # seconds
 SAMPLE_TIME = 30 # seconds
-PICTURE_TIME = 5 # seconds between photos
+SAMPLE_ACTION_TIME = 5 # seconds between actions
 
 class TestPower(GaiaTestCase):
 
@@ -71,53 +71,35 @@ class TestPower(GaiaTestCase):
             return None
 
 
-    def runPowerTestLoopSimple(self, testName, appName, context):
+    def runPowerTestLoop(self, testName, appName, context, actionInterval, actionFunction):
         sampleLog = []
         samples = []
         totalCurrent = 0
         done = False
         stopTime = time.time() + SAMPLE_TIME
-        while not done:
-            current = self.getSample(sampleLog, samples)
-            if current is not None:
-                totalCurrent += current
-            done = (time.time() > stopTime)
-
-        averageCurrent = int(totalCurrent / len(sampleLog))
-        return (sampleLog, samples, averageCurrent)
-
-
-    def runPowerTestCameraPictures(self, testName, appName, context):
-        sampleLog = []
-        samples = []
-        totalCurrent = 0
-        done = False
-        stopTime = time.time() + SAMPLE_TIME
-        nextPictureTime = time.time() + PICTURE_TIME
+        nextActionTime = time.time() + actionInterval
         while not done:
             current = self.getSample(sampleLog, samples)
             if current is not None:
                 totalCurrent += current
             timeNow = time.time()
-            if timeNow > nextPictureTime:
-                self.camera.take_photo()
-                nextPictureTime = timeNow + PICTURE_TIME
+            if timeNow > nextActionTime:
+                if actionFunction is not None:
+                    actionFunction()
+                nextActionTime = timeNow + actionInterval
             done = (timeNow > stopTime)
 
         averageCurrent = int(totalCurrent / len(sampleLog))
         return (sampleLog, samples, averageCurrent)
 
 
-    def runPowerTest(self, testName, appName, context):
+    def runPowerTest(self, testName, appName, context, actionInterval=SAMPLE_ACTION_TIME, actionFunction=None):
         print ""
         print "Waiting", STABILIZATION_TIME, "seconds to stabilize"
         time.sleep(STABILIZATION_TIME)
 
         print "Starting power test, gathering results for", SAMPLE_TIME, "seconds"
-        if testName == "camera_picture":
-            (sampleLog, samples, averageCurrent) = self.runPowerTestCameraPictures(testName, appName, context)
-        else:
-            (sampleLog, samples, averageCurrent) = self.runPowerTestLoopSimple(testName, appName, context)
+        (sampleLog, samples, averageCurrent) = self.runPowerTestLoop(testName, appName, context, actionInterval, actionFunction)
         powerProfile = {}
         powerProfile['testTime'] = datetime.now().strftime("%Y%m%d%H%M%S")
         powerProfile['epoch'] = int(time.time() * 1000)
