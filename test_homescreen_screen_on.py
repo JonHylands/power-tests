@@ -5,9 +5,8 @@
 from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
 
-from power_test_support import TestPower
+from powertests import TestPower
 
-from powertool.mozilla import MozillaAmmeter
 from datetime import datetime
 
 import time

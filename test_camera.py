@@ -8,7 +8,7 @@ from gaiatest.apps.camera.app import Camera
 from marionette_driver.marionette import Actions
 from marionette_driver.by import By
 
-from power_test_support import TestPower
+from powertests import TestPower
 
 from powertool.mozilla import MozillaAmmeter
 from datetime import datetime

@@ -7,7 +7,7 @@ from gaiatest.apps.lockscreen.app import LockScreen
 from gaiatest.apps.music.app import Music
 from gaiatest.apps.videoplayer.app import VideoPlayer
 
-from power_test_support import TestPower
+from powertests import TestPower
 
 from powertool.mozilla import MozillaAmmeter
 from datetime import datetime
