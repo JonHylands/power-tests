@@ -72,9 +72,6 @@ class TestCameraPower(TestPower):
         time.sleep(5)
         self.camera.tap_switch_source()
         time.sleep(5)
-        while (self.camera.current_flash_mode != 'off'):
-            self.camera.tap_toggle_flash_button();
-        time.sleep(2)
         self.marionette.switch_to_frame()
         self.wait_for_element_present(*self._camera_frame_locator)
         camera_frame = self.marionette.find_element(*self._camera_frame_locator)
@@ -105,6 +102,9 @@ class TestCameraPower(TestPower):
         camera_frame = self.marionette.find_element(*self._camera_frame_locator)
         camera_frame.tap()
         self.marionette.switch_to_frame(camera_frame)
+        while (self.camera.current_flash_mode != 'off'):
+            self.camera.tap_toggle_flash_button();
+        time.sleep(2)
 
         print ""
         print "Running Camera Picture Test"
