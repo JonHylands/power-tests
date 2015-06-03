@@ -43,7 +43,7 @@ class TestMediaPlaybackPower(TestPower):
 
         player_view = songs[0].tap_first_song()
 
-        play_time = time.strptime('00:03', '%M:%S')
+        play_time = time.strptime('00:10', '%M:%S')
         self.wait_for_condition(lambda m: player_view.player_elapsed_time >= play_time)
 
         # validate playback
