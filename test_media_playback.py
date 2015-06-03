@@ -24,7 +24,7 @@ class TestMediaPlaybackPower(TestPower):
         TestPower.setUp(self)
 
 
-    def test_background_music_playback(self):
+    def music_playback(self, screen_flag):
         self.push_resource(os.path.abspath('source/MP3_Au4.mp3'))
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
@@ -50,10 +50,23 @@ class TestMediaPlaybackPower(TestPower):
         self.assertTrue(player_view.is_player_playing(), 'The player is not playing')
 
         self.marionette.switch_to_frame()
-        self.device.turn_screen_off()
         print ""
-        print "Running Music Test (screen off)"
-        self.runPowerTest("background_music_playback", "Music", "music")
+        if screen_flag:
+            print "Running Music Test (screen on)"
+            test_name = "music_playback"
+        else:
+            self.device.turn_screen_off()
+            print "Running Music Test (screen off)"
+            test_name = "background_music_playback"
+        self.runPowerTest(test_name, "Music", "music")
+
+
+    def test_background_music_playback(self):
+        self.music_playback(False)
+
+
+    def test_music_playback(self):
+        self.music_playback(True)
 
 
     def test_video_playback(self):
