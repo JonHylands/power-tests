@@ -69,7 +69,7 @@ class TestMediaPlaybackPower(TestPower):
         self.music_playback(True)
 
 
-    def test_video_playback(self):
+    def video_playback(self, screen_flag):
         self.push_resource(os.path.abspath('source/meetthecubs.webm'))
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
@@ -107,8 +107,22 @@ class TestMediaPlaybackPower(TestPower):
         self.assertEqual('content', self.data_layer.current_audio_channel)
 
         print ""
-        print "Running Video Test"
-        self.runPowerTest("video_playback", "Video", "video")
+        if screen_flag:
+            print "Running Video Test (screen on)"
+            test_name = "video_playback"
+        else:
+            self.device.turn_screen_off()
+            print "Running Video Test (screen off)"
+            test_name = "background_video_playback"
+        self.runPowerTest(test_name, "Video", "video")
+
+
+    def test_background_video_playback(self):
+        self.video_playback(False)
+
+
+    def test_video_playback(self):
+        self.video_playback(True)
 
 
     def tearDown(self):
