@@ -114,6 +114,8 @@ class TestMediaPlaybackPower(TestPower):
             self.device.turn_screen_off()
             print "Running Video Test (screen off)"
             test_name = "background_video_playback"
+            time.sleep(2)
+            fullscreen_video.tap_play() #when you turn off the screen, video playback pauses...
         self.runPowerTest(test_name, "Video", "video")
 
 
