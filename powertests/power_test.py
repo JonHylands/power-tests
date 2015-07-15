@@ -38,11 +38,17 @@ class TestPower(GaiaTestCase):
         self.data_layer.set_setting("airplaneMode.enabled", True)
 
         # Make sure USB charging is turned off
+        #cmd = []
+        #cmd.append("adb")
+        #cmd.append("shell")
+        #cmd.append("echo 0 > /sys/class/power_supply/battery/charging_enabled")
+        #subprocess.Popen(cmd)
+        
+        # try using the extended ammeter's ability to cut off the USB
         cmd = []
-        cmd.append("adb")
-        cmd.append("shell")
-        cmd.append("echo 0 > /sys/class/power_supply/battery/charging_enabled")
+        cmd.append("python ~/moz-amp/turnOffAuxUsb.py")
         subprocess.Popen(cmd)
+
 
         # Set up the ammeter
         self.ammeterFields = ('current','voltage','time')
