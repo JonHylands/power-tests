@@ -100,6 +100,7 @@ class TestPower(GaiaTestCase):
 
 
     def runPowerTest(self, testName, appName, context, actionInterval=SAMPLE_ACTION_TIME, actionFunction=None):
+        self.ammeter.softReset() # fix any USB issues that have crept in
         print ""
         print "Waiting", STABILIZATION_TIME, "seconds to stabilize"
         time.sleep(STABILIZATION_TIME)
