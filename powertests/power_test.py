@@ -52,7 +52,7 @@ class TestPower(GaiaTestCase):
 
         # Set up the ammeter
         self.ammeterFields = ('current','voltage','time')
-        serialPortName = "/dev/ttyACM0"
+        serialPortName = None #we want powertool to figure out the port...
         self.ammeter = MozillaAmmeter(serialPortName, False)
 
         # Grab a sample, and calculate the timer offset from ammeter time to wall clock time
