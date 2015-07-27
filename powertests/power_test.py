@@ -118,7 +118,7 @@ class TestPower(GaiaTestCase):
         print "Sample count:", len(sampleLog)
         print "Average current:", averageCurrent, "mA"
         self.writeTestResults(powerProfile)
-        # self.ammeter.softReset() # fix any USB issues that have crept in
+        self.ammeter.softReset() # fix any USB issues that have crept in
 
 
     def writeTestResults(self, powerProfile):
