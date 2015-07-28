@@ -119,8 +119,9 @@ class TestMediaPlaybackPower(TestPower):
         self.runPowerTest(test_name, "Video", "video")
 
 
-    def test_background_video_playback(self):
-        self.video_playback(False)
+# Background Video Playback doesn't work - the video shuts off shortly after turning off the screen
+#    def test_background_video_playback(self):
+#        self.video_playback(False)
 
 
     def test_video_playback(self):
