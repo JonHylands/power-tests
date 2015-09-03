@@ -6,7 +6,7 @@ from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
 from gaiatest.apps.camera.app import Camera
 from marionette_driver.marionette import Actions
-from marionette_driver import By, Wait
+from marionette_driver import expected, By, Wait
 
 from powertests import TestPower
 
