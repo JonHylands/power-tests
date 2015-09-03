@@ -6,7 +6,7 @@ from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
 from gaiatest.apps.camera.app import Camera
 from marionette_driver.marionette import Actions
-from marionette_driver.by import By
+from marionette_driver import By, Wait
 
 from powertests import TestPower
 
@@ -49,9 +49,9 @@ class TestCameraPower(TestPower):
         while (self.camera.current_flash_mode != 'off'):
             self.camera.tap_toggle_flash_button();
         time.sleep(2)
-        self.marionette.switch_to_frame()
-        self.wait_for_element_present(*self._camera_frame_locator)
-        camera_frame = self.marionette.find_element(*self._camera_frame_locator)
+        self.marionette.switch_to_frame()        
+        camera_frame = Wait(self.marionette, timeout=120).until(
+            expected.element_present(*self._camera_frame_locator))
         camera_frame.tap()
         self.marionette.switch_to_frame(camera_frame)
 
@@ -79,8 +79,8 @@ class TestCameraPower(TestPower):
         self.camera.tap_switch_source()
         time.sleep(5)
         self.marionette.switch_to_frame()
-        self.wait_for_element_present(*self._camera_frame_locator)
-        camera_frame = self.marionette.find_element(*self._camera_frame_locator)
+        camera_frame = Wait(self.marionette, timeout=120).until(
+            expected.element_present(*self._camera_frame_locator))
         camera_frame.tap()
         self.marionette.switch_to_frame(camera_frame)
         self.camera.tap_capture()
@@ -107,8 +107,8 @@ class TestCameraPower(TestPower):
             self.camera.tap_toggle_flash_button();
         time.sleep(2)
         self.marionette.switch_to_frame()
-        self.wait_for_element_present(*self._camera_frame_locator)
-        camera_frame = self.marionette.find_element(*self._camera_frame_locator)
+        camera_frame = Wait(self.marionette, timeout=120).until(
+            expected.element_present(*self._camera_frame_locator))
         camera_frame.tap()
         self.marionette.switch_to_frame(camera_frame)
 
