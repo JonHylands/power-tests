@@ -4,16 +4,8 @@
 
 from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
-
 from powertests import TestPower
 
-from datetime import datetime
-
-import time
-import json
-import sys
-import os
-import subprocess
 
 class TestWifiHomescreenPower(TestPower):
 
