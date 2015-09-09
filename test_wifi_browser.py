@@ -30,7 +30,7 @@ class TestWifiBrowserPower(TestPower):
         return search_panel.go_to_url(url)
 
 
-    def test_wifi_browser_yahoo(self):
+    def wifi_browser_run_test(self, url, test_name):
         """https://moztrap.mozilla.org/manage/case/1296/"""
 
         lock_screen = LockScreen(self.marionette)
@@ -40,10 +40,24 @@ class TestWifiBrowserPower(TestPower):
         print "Connected to wifi"
 
         self.apps.switch_to_displayed_app()
-        self.go_to_url(homescreen, "http://www.yahoo.com")
+        self.go_to_url(homescreen, url)
         print ""
-        print "Running Wifi Browser Test (Yahoo)"
-        self.runPowerTest("wifi_browser_yahoo", "Browser", "browser")
+        print "Running Wifi Browser Test (", test_name, ")"
+        self.runPowerTest(test_name, "Browser", "browser")
+
+
+    def test_wifi_browser_download(self):
+        """https://moztrap.mozilla.org/manage/case/1296/"""
+        
+        url = "https://queue.taskcluster.net/v1/task/HSMUuJewT6qQW7iJ_ohV-Q/artifacts/public/build/flame.blobfree-dist.zip"
+        self.wifi_browser_run_test(url, "wifi_browser_download")
+
+
+    def test_wifi_browser_node(self):
+        """https://moztrap.mozilla.org/manage/case/1296/"""
+
+        url = "http://192.168.1.177:5000"
+        self.wifi_browser_run_test(url, "wifi_browser_node")
 
 
     def tearDown(self):
