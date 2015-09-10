@@ -36,6 +36,7 @@ class TestWifiBrowserPower(TestPower):
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
 
+        self.data_layer.disable_wifi() # make sure it starts out disabled
         self.data_layer.connect_to_wifi()
         print "Connected to wifi"
 
