@@ -20,25 +20,34 @@ class RaptorTestPoster(object):
 
     def post_to_raptor(self, results):
 
-        #json_string = '[{"name": "flash.idle_screen_on.current","columns": ["time", "entryType", "context", "appName", "epoch", "value", "branch", "device", "memory"],"points": [[1400425947368, "current", "verticalhome.gaiamobile.org", "Homescreen", 1429214460095, 350, "master", "flame-kk", 1024]]}]'
-        json_string = '[{"name": "'
-        json_string += results["name"]
-        json_string += '", "columns": ["time", "entryType", "context", "appName", "epoch", "value", "branch", "device", "memory"], '
-        json_string += '"points": [['
-        json_string += str(results["time"])
-        json_string += ', "current", "'
-        json_string += results["context"]
-        json_string += '", "'
-        json_string += results["app_name"]
-        json_string += '", '
-        json_string += str(results["time"])
-        json_string += ', '
-        json_string += str(results["value"])
-        json_string += ', "master", "flame-kk", 1024]]}]'
+        #json_string = '[{"name": "'
+        #json_string += results["name"]
+        #json_string += '", "columns": ["time", "entryType", "context", "value", "branch", "device", "memory"], '
+        #json_string += '"points": [['
+        #json_string += str(results["time"])
+        #json_string += ', "current", "'
+        #json_string += results["context"]
+        #json_string += ', '
+        #json_string += str(results["value"])
+        #json_string += ', "master", "flame-kk", 1024]]}]'
+        
+        line_string = results["name"]
+        line_string += ',context='
+        line_string += results["context"]
+        line_string += ',test='
+        line_string += results["test"]
+        line_string += ',device=flame-kk,memory=1024,branch=master value='
+        line_string += str(results["average"])
+        line_string += ' '
+        line_string += str(results["time"] * 1000000)
+
+        #command_string = """\
+#curl -X POST -d '%(json)s' \
+#'http://goldiewilson-onepointtwentyone-1.c.influxdb.com:8086/db/raptor/series?u=power&p=123456'""" % {'json': json_string}
 
         command_string = """\
-curl -X POST -d '%(json)s' \
-'http://goldiewilson-onepointtwentyone-1.c.influxdb.com:8086/db/raptor/series?u=power&p=123456'""" % {'json': json_string}
+curl -i -X POST 'https://calvinklein-hueylewis-1.c.influxdb.com:8086/write?db=raptor' -u power:%(password)s --data-binary \
+'%(line)s'""" % {'line': line_string, 'password': os.environ.get('RAPTOR_PASSWORD')}
 
         print "os.system - ", command_string
         os.system(command_string)
@@ -141,7 +150,7 @@ def cli():
         for x in read_in:
             if x.find(':') != -1: # Ignore empty lines ie. last line of file which is empty
                 k, v = x.split(': ')
-                if k in ["average", "test_runtime", "completed"]:
+                if k in ["average", "time"]:
                     results[k] = int(v)
                 else:
                     results[k] = v

@@ -124,9 +124,10 @@ class TestPower(GaiaTestCase):
     def writeTestResults(self, powerProfile):
         summaryName = '%s_%s_summary.log' % (powerProfile['testName'], powerProfile['testTime'])
         summaryFile = open(summaryName, 'w')
-        summaryFile.write("name: power.%s.current\n" % powerProfile["testName"])
+        summaryFile.write("name: power\n")
+        summaryFile.write("test: %s\n" % powerProfile["testName"])
         summaryFile.write("time: %s\n" % powerProfile["epoch"])
-        summaryFile.write("value: %s\n" % powerProfile["average"])
+        summaryFile.write("average: %s\n" % powerProfile["average"])
         summaryFile.write("context: %s\n" % powerProfile["context"])
         summaryFile.write("app_name: %s\n" % powerProfile["app"])
         summaryFile.write("\n")
