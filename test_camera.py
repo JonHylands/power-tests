@@ -31,7 +31,7 @@ class TestCameraPower(TestPower):
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
 
-        self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+        #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
 
         # Turn off the geolocation prompt, and then launch the camera app
         self.apps.set_permission('Camera', 'geolocation', 'deny')
@@ -57,7 +57,7 @@ class TestCameraPower(TestPower):
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
 
-        self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+        #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
 
         # Turn off the geolocation prompt, and then launch the camera app
         self.apps.set_permission('Camera', 'geolocation', 'deny')

@@ -9,7 +9,7 @@ from gaiatest.apps.videoplayer.app import VideoPlayer
 
 from powertests import TestPower
 import os
-
+import time
 
 class TestMediaPlaybackPower(TestPower):
 
@@ -21,7 +21,7 @@ class TestMediaPlaybackPower(TestPower):
         self.push_resource(os.path.abspath('source/MP3_Au4.mp3'))
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
-        self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+        #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
 
         music_app = Music(self.marionette)
         music_app.launch()
@@ -66,7 +66,7 @@ class TestMediaPlaybackPower(TestPower):
         self.push_resource(os.path.abspath('source/meetthecubs.webm'))
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
-        self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+        #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
 
         video_player = VideoPlayer(self.marionette)
         video_player.launch()
