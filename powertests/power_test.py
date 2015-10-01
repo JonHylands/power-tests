@@ -83,7 +83,7 @@ class TestPower(GaiaTestCase):
         nextActionTime = time.time() + actionInterval
         while not done:
             current = None
-            #current = self.getSample(sampleLog, samples)
+            current = self.getSample(sampleLog, samples)
             if current is not None:
                 totalCurrent += current
             timeNow = time.time()

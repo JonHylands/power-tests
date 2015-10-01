@@ -9,6 +9,7 @@ from marionette_driver.marionette import Actions
 from marionette_driver import expected, By, Wait
 
 from powertests import TestPower
+import time
 
 
 PICTURE_INTERVAL_TIME = 5 # seconds between photos
