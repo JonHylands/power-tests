@@ -7,13 +7,6 @@ from gaiatest.apps.lockscreen.app import LockScreen
 
 from powertests import TestPower
 
-from datetime import datetime
-
-import time
-import json
-import sys
-import os
-import subprocess
 
 class TestHomescreenPower(TestPower):
 
@@ -27,7 +20,8 @@ class TestHomescreenPower(TestPower):
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
 
-        self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+        #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+        homescreen.wait_to_be_displayed()
         self.device.turn_screen_off()
         print ""
         print "Running Idle Test (screen off)"
@@ -40,7 +34,8 @@ class TestHomescreenPower(TestPower):
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
 
-        self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+        #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+        homescreen.wait_to_be_displayed()
         print ""
         print "Running Idle Test (screen on)"
         self.runPowerTest("idle_screen_on", "Homescreen", "verticalhome")

@@ -4,19 +4,11 @@
 
 from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
-from gaiatest.apps.music.app import Music
+#from gaiatest.apps.music.app import Music
 from gaiatest.apps.videoplayer.app import VideoPlayer
 
 from powertests import TestPower
 
-from powertool.mozilla import MozillaAmmeter
-from datetime import datetime
-
-import time
-import json
-import sys
-import os
-import subprocess
 
 class TestMediaPlaybackPower(TestPower):
 

@@ -10,15 +10,6 @@ from marionette_driver import expected, By, Wait
 
 from powertests import TestPower
 
-from powertool.mozilla import MozillaAmmeter
-from datetime import datetime
-
-import time
-import json
-import sys
-import os
-import subprocess
-
 
 PICTURE_INTERVAL_TIME = 5 # seconds between photos
 
