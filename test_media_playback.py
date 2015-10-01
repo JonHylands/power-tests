@@ -8,6 +8,7 @@ from gaiatest.apps.lockscreen.app import LockScreen
 from gaiatest.apps.videoplayer.app import VideoPlayer
 
 from powertests import TestPower
+import os
 
 
 class TestMediaPlaybackPower(TestPower):
