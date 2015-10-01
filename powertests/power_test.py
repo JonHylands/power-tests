@@ -3,9 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from gaiatest import GaiaTestCase
-from gaiatest.apps.lockscreen.app import LockScreen
-from gaiatest.apps.music.app import Music
-from gaiatest.apps.videoplayer.app import VideoPlayer
 
 from powertool.mozilla import MozillaAmmeter
 from datetime import datetime
@@ -85,7 +82,8 @@ class TestPower(GaiaTestCase):
         stopTime = time.time() + SAMPLE_TIME
         nextActionTime = time.time() + actionInterval
         while not done:
-            current = self.getSample(sampleLog, samples)
+            current = None
+            #current = self.getSample(sampleLog, samples)
             if current is not None:
                 totalCurrent += current
             timeNow = time.time()
@@ -95,7 +93,10 @@ class TestPower(GaiaTestCase):
                 nextActionTime = timeNow + actionInterval
             done = (timeNow > stopTime)
 
-        averageCurrent = int(totalCurrent / len(sampleLog))
+        if len(sampleLog) == 0:
+            averageCurrent = 0.0
+        else:
+            averageCurrent = int(totalCurrent / len(sampleLog))
         return (sampleLog, samples, averageCurrent)
 
 
