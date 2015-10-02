@@ -30,21 +30,30 @@ class TestCameraPower(TestPower):
         """https://moztrap.mozilla.org/manage/case/1296/"""
 
         lock_screen = LockScreen(self.marionette)
+        print "DEBUG - 1"
         homescreen = lock_screen.unlock()
+        print "DEBUG - 2"
 
         #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
 
         # Turn off the geolocation prompt, and then launch the camera app
         self.apps.set_permission('Camera', 'geolocation', 'deny')
+        print "DEBUG - 3"
         self.camera = Camera(self.marionette)
+        print "DEBUG - 4"
         self.camera.launch()
+        print "DEBUG - 5"
         while (self.camera.current_flash_mode != 'off'):
             self.camera.tap_toggle_flash_button();
+        print "DEBUG - 6"
         time.sleep(2)
         self.marionette.switch_to_frame()        
+        print "DEBUG - 7"
         camera_frame = Wait(self.marionette, timeout=120).until(
             expected.element_present(*self._camera_frame_locator))
+        print "DEBUG - 8"
         camera_frame.tap()
+        print "DEBUG - 9"
         self.marionette.switch_to_frame(camera_frame)
 
         print ""
@@ -89,7 +98,7 @@ class TestCameraPower(TestPower):
         lock_screen = LockScreen(self.marionette)
         homescreen = lock_screen.unlock()
 
-        self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
+        #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
 
         # Turn off the geolocation prompt, and then launch the camera app
         self.apps.set_permission('Camera', 'geolocation', 'deny')
