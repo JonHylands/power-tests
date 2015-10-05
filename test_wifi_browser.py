@@ -26,6 +26,7 @@ class TestWifiBrowserPower(TestPower):
 
     def go_to_url(self, homescreen, url):
         search_panel = homescreen.tap_search_bar()
+        print self.marionette.page_source() 
         return search_panel.go_to_url(url)
 
 
