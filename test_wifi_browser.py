@@ -6,6 +6,7 @@ from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
 from powertests import TestPower
 from marionette_driver import expected, By, Wait
+from gaiatest.apps.search.app import Search
 
 
 class TestWifiBrowserPower(TestPower):
@@ -25,8 +26,13 @@ class TestWifiBrowserPower(TestPower):
 
 
     def go_to_url(self, homescreen, url):
-        search_panel = homescreen.tap_search_bar()
-        return search_panel.go_to_url(url)
+        search = Search(self.marionette)
+        search.launch()
+        browser = search.go_to_url(url)
+
+    #def go_to_url(self, homescreen, url):
+        #search_panel = homescreen.tap_search_bar()
+        #return search_panel.go_to_url(url)
 
 
     def wifi_browser_run_test(self, url, test_name):
