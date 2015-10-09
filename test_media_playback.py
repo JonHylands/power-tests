@@ -4,7 +4,7 @@
 
 from gaiatest import GaiaTestCase
 from gaiatest.apps.lockscreen.app import LockScreen
-from gaiatest.apps.music.app import Music
+from gaiatest.apps.music_oga.app import Music
 from gaiatest.apps.videoplayer.app import VideoPlayer
 
 from powertests import TestPower
