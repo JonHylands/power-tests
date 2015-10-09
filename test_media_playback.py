@@ -54,11 +54,11 @@ class TestMediaPlaybackPower(TestPower):
         self.runPowerTest(test_name, "Music", "music")
 
 
-    def jon_test_background_music_playback(self):
+    def test_background_music_playback(self):
         self.music_playback(False)
 
 
-    def jon_test_music_playback(self):
+    def test_music_playback(self):
         self.music_playback(True)
 
 
