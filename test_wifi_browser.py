@@ -11,14 +11,6 @@ from gaiatest.apps.search.app import Search
 
 class TestWifiBrowserPower(TestPower):
 
-    name = 'Browser'
-    manifest_url = "app://search.gaiamobile.org/manifest.webapp"
-
-    #_url_bar_locator = (By.CSS_SELECTOR, 'div.search-app .urlbar .title')
-    _url_bar_locator = (By.ID, 'search-input')
-    #_history_item_locator = (By.CSS_SELECTOR, '#history .result')
-    #_private_window_locator = (By.ID, 'private-window')
-
 
     def setUp(self):
         TestPower.setUp(self)
@@ -29,10 +21,6 @@ class TestWifiBrowserPower(TestPower):
         search = Search(self.marionette)
         search.launch()
         browser = search.go_to_url(url)
-
-    #def go_to_url(self, homescreen, url):
-        #search_panel = homescreen.tap_search_bar()
-        #return search_panel.go_to_url(url)
 
 
     def wifi_browser_run_test(self, url, test_name):
