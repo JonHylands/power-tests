@@ -21,7 +21,7 @@ class TestHomescreenPower(TestPower):
         homescreen = lock_screen.unlock()
 
         #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
-        homescreen.wait_to_be_displayed()
+        #homescreen.wait_to_be_displayed()
         self.device.turn_screen_off()
         print ""
         print "Running Idle Test (screen off)"
@@ -35,7 +35,7 @@ class TestHomescreenPower(TestPower):
         homescreen = lock_screen.unlock()
 
         #self.wait_for_condition(lambda m: self.apps.displayed_app.name == homescreen.name)
-        homescreen.wait_to_be_displayed()
+        #homescreen.wait_to_be_displayed()
         print ""
         print "Running Idle Test (screen on)"
         self.runPowerTest("idle_screen_on", "Homescreen", "verticalhome")
