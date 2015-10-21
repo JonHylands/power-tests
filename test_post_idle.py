@@ -9,12 +9,14 @@ from gaiatest.apps.lockscreen.app import LockScreen
 from powertests import TestPower
 import time
 from marionette_driver import expected, By, Wait
+from gaiatest.apps.camera.app import Camera
 from gaiatest.apps.search.app import Search
 
 
 class TestPostIdlePower(TestPower):
 
     _geoloc_start_button_locator = (By.ID, 'permission-yes')
+    _camera_frame_locator = (By.CSS_SELECTOR, 'iframe[src*="camera"][src*="/index.html"]')
 
 
     def setUp(self):
@@ -83,6 +85,33 @@ class TestPostIdlePower(TestPower):
 
         url = "https://maps.google.com"
         self.post_idle_wifi_browser_run_test(url, "post_idle_maps", True)
+
+
+    def test_post_camera_preview(self):
+
+        lock_screen = LockScreen(self.marionette)
+        homescreen = lock_screen.unlock()
+
+        # Turn off the geolocation prompt, and then launch the camera app
+        self.apps.set_permission('Camera', 'geolocation', 'deny')
+        self.camera = Camera(self.marionette)
+        self.camera.launch()
+        while (self.camera.current_flash_mode != 'off'):
+            self.camera.tap_toggle_flash_button();
+        time.sleep(2)
+        self.marionette.switch_to_frame()        
+        camera_frame = Wait(self.marionette, timeout=120).until(
+            expected.element_present(*self._camera_frame_locator))
+        camera_frame.tap()
+        self.marionette.switch_to_frame(camera_frame)
+        time.sleep(20)
+        self.device.touch_home_button()
+        time.sleep(10)
+        self.device.turn_screen_off()
+
+        print ""
+        print "Running Post Camera Preview Test"
+        self.runPowerTest("post_idle_camera_preview", "Camera", "camera")
 
 
     def tearDown(self):
