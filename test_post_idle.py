@@ -11,6 +11,10 @@ import time
 from marionette_driver import expected, By, Wait
 from gaiatest.apps.camera.app import Camera
 from gaiatest.apps.search.app import Search
+from gaiatest.apps.settings.app import Settings
+from gaiatest.apps.keyboard.app import Keyboard
+
+import pdb
 
 
 class TestPostIdlePower(TestPower):
@@ -112,6 +116,43 @@ class TestPostIdlePower(TestPower):
         print ""
         print "Running Post Camera Preview Test"
         self.runPowerTest("post_idle_camera_preview", "Camera", "camera")
+
+
+    def test_post_bluetooth(self):
+
+        lock_screen = LockScreen(self.marionette)
+        homescreen = lock_screen.unlock()
+
+        settings = Settings(self.marionette)
+        settings.launch()
+        bluetooth_settings = settings.open_bluetooth()
+
+        self.data_layer.bluetooth_disable() # make sure it starts out disabled
+        self.data_layer.bluetooth_enable()
+        print "Enabled bluetooth"
+        time.sleep(20)
+        # Sometimes the BT device doesn't show up in the list right off. Try and click it, 
+        # if we can't then do an actual search and then try to click it again
+        if not bluetooth_settings.tap_device('HC-06'):
+            print "About to search for devices"
+            bluetooth_settings.tap_search_for_devices()
+            print "Tapped search for devices"
+            time.sleep(15)
+            if not bluetooth_settings.tap_device('HC-06'):
+                assert False, "Unable to find bluetooth device 'HC-06'..."
+        keyboard = Keyboard(self.marionette)
+        #time.sleep(1)
+        keyboard.send("1234")
+        keyboard.tap_enter()
+        time.sleep(35)
+        print "Done sleep, disabling bluetooth"
+        self.data_layer.bluetooth_disable()
+        print "Disabled bluetooth"
+
+        self.device.turn_screen_off()
+        print ""
+        print "Running Post Bluetooth Test"
+        self.runPowerTest("post_idle_bluetooth", "Settings", "settings")
 
 
     def tearDown(self):
