@@ -47,7 +47,7 @@ class TestWifiBrowserPower(TestPower):
         self.wifi_browser_run_test(url, "wifi_browser_download")
 
 
-    def test_wifi_browser_node(self):
+    def jon_test_wifi_browser_node(self):
         """https://moztrap.mozilla.org/manage/case/1296/"""
 
         url = "http://192.168.1.177:5000"
