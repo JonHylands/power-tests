@@ -41,12 +41,6 @@ class TestPower(GaiaTestCase):
         cmd.append("echo 0 > /sys/class/power_supply/battery/charging_enabled")
         subprocess.Popen(cmd)
         
-        # try using the extended ammeter's ability to cut off the USB
-        #cmd = []
-        #cmd.append("python ~/moz-amp/turnOffAuxUsb.py")
-        #subprocess.Popen(cmd)
-
-
         # Set up the ammeter
         self.ammeterFields = ('current','voltage','time')
         serialPortName = None #we want powertool to figure out the port...
@@ -57,6 +51,7 @@ class TestPower(GaiaTestCase):
         sampleTimeAfterEpochOffset = time.time()
         firstSampleMsCounter = sample['time'].value
         self.sampleTimeEpochOffset = int(sampleTimeAfterEpochOffset * 1000.0) - firstSampleMsCounter;
+
         print "setUp - done"
 
 
@@ -101,6 +96,11 @@ class TestPower(GaiaTestCase):
 
 
     def runPowerTest(self, testName, appName, context, actionInterval=SAMPLE_ACTION_TIME, actionFunction=None):
+        # try using the extended ammeter's ability to cut off the USB
+        print "Turning on debug mode"
+        #self.ammeter.turnOnDebugMode()
+        print "Turning off Aux USB on ammeter"
+        self.ammeter.turnOffAuxUsb()
         print ""
         print "Waiting", STABILIZATION_TIME, "seconds to stabilize"
         time.sleep(STABILIZATION_TIME)
@@ -119,7 +119,18 @@ class TestPower(GaiaTestCase):
         print "Sample count:", len(sampleLog)
         print "Average current:", averageCurrent, "mA"
         self.writeTestResults(powerProfile)
-        self.ammeter.softReset() # fix any USB issues that have crept in
+        print "Turning Aux USB back on"
+        self.ammeter.turnOnAuxUsb()
+        time.sleep(5)
+        # Turn USB charging back on
+        cmd = []
+        cmd.append("adb")
+        cmd.append("forward")
+        cmd.append("tcp:2828")
+        cmd.append("tcp:2828")
+        print "Running adb forward tcp:2828 tcp:2828"
+        subprocess.Popen(cmd)
+#        self.ammeter.softReset() # fix any USB issues that have crept in
 
 
     def writeTestResults(self, powerProfile):
@@ -136,7 +147,10 @@ class TestPower(GaiaTestCase):
 
 
     def tearDown(self):
-        GaiaTestCase.tearDown(self)
+        try:
+            GaiaTestCase.tearDown(self)
+        except IOError:
+            print "Expected IOError in tearDown, supressing"
 
         # Disconnect from the ammeter
         self.ammeter.close()
@@ -146,5 +160,6 @@ class TestPower(GaiaTestCase):
         cmd.append("adb")
         cmd.append("shell")
         cmd.append("echo 1 > /sys/class/power_supply/battery/charging_enabled")
+        print "Turning charge flag back on"
         subprocess.Popen(cmd)
-        time.sleep(1)
+

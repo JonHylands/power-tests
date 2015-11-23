@@ -133,11 +133,12 @@ class TestPostIdlePower(TestPower):
         time.sleep(20)
         # Sometimes the BT device doesn't show up in the list right off. Try and click it, 
         # if we can't then do an actual search and then try to click it again
+        print "First Try"
         if not bluetooth_settings.tap_device('HC-06'):
             print "About to search for devices"
             bluetooth_settings.tap_search_for_devices()
-            print "Tapped search for devices"
-            time.sleep(15)
+            time.sleep(1)
+            print "Second Try"
             if not bluetooth_settings.tap_device('HC-06'):
                 assert False, "Unable to find bluetooth device 'HC-06'..."
         keyboard = Keyboard(self.marionette)
@@ -145,6 +146,14 @@ class TestPostIdlePower(TestPower):
         keyboard.send("1234")
         keyboard.tap_enter()
         time.sleep(35)
+        print "Attempting to unpair with device"
+        bluetooth_settings.refresh_root_element()
+        if bluetooth_settings.tap_device('HC-06'):
+            print "Confirming unpair"
+            time.sleep(2)
+            bluetooth_settings.tap_confirm_unpair_device()
+            time.sleep(10)
+            print "Device unpaired"
         print "Done sleep, disabling bluetooth"
         self.data_layer.bluetooth_disable()
         print "Disabled bluetooth"
@@ -157,4 +166,5 @@ class TestPostIdlePower(TestPower):
 
     def tearDown(self):
         TestPower.tearDown(self)
+
 
