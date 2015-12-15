@@ -130,7 +130,7 @@ class TestPower(GaiaTestCase):
         cmd.append("tcp:2828")
         print "Running adb forward tcp:2828 tcp:2828"
         subprocess.Popen(cmd)
-#        self.ammeter.softReset() # fix any USB issues that have crept in
+        self.ammeter.softReset() # fix any USB issues that have crept in
 
 
     def writeTestResults(self, powerProfile):
